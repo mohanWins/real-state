@@ -1,5 +1,10 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@/app/globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import "@fortawesome/fontawesome-free/css/all.min.css"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
