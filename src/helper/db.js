@@ -1,20 +1,16 @@
 import mongoose from "mongoose";
-import { userSetup } from "@/models/user";
+
 export const ConnectDb = async () => {
   try {
+    if (mongoose.connections.length > 0) {
+      return;
+    }
+
     const { connection } = await mongoose.connect(process.env.MONGO_DB_URL, {
-      dbName: "work_manager",
+      dbName: "real-state",
     });
 
-    const user = new userSetup({
-      name: "tester",
-      email: "mohansharma121@gmail.com",
-      password: "2345",
-    });
-    await user.save();
-
-    const newUser = console.log("connected");
-    console.log("user is created");
+    return connection;
   } catch (error) {
     console.log(error);
   }

@@ -4,8 +4,19 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"; // Impor
 import Link from "next/link";
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export const Header = () => {
+  const router = useRouter();
+  const logout = async () => {
+    try {
+      await axios.get("/api/users/logout");
+      router.push("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <Navbar expand="lg">
@@ -47,6 +58,8 @@ export const Header = () => {
               Sign in
             </Link>
           </div>
+
+          <div onClick={logout}>logout</div>
         </div>
       </Navbar>
     </>

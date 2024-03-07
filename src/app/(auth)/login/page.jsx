@@ -6,18 +6,21 @@ import * as Yup from "yup";
 import Image from "next/image";
 import { Form, Button } from "react-bootstrap";
 import Link from "next/link";
+import axios from "axios";
+
+import { useRouter } from "next/navigation";
 
 const SignupSchema = Yup.object().shape({
-  fullName: Yup.string()
-    .min(2, "Too Short!")
-    .max(40, "Too Long!")
-    .required("Full name is required field"),
   email: Yup.string()
     .email("Invalid email")
     .required(" Email is required field"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
 const ValidationSchemaExample = () => {
+  const router = useRouter();
   return (
     <div className="container-fluid vh-100">
       <div className="row h-100">
@@ -33,12 +36,16 @@ const ValidationSchemaExample = () => {
           }}
         >
           <Formik
-            initialValues={{ fullName: "", email: "" }}
+            initialValues={{ email: "", password: "" }}
             validationSchema={SignupSchema}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
               resetForm();
-
-              console.log(values, "value");
+              try {
+                await axios.post("/api/users/login", values);
+                router.push("/");
+              } catch (error) {
+                console.log("Login  failed", error.message);
+              }
             }}
           >
             {({
@@ -51,24 +58,6 @@ const ValidationSchemaExample = () => {
               isSubmitting,
             }) => (
               <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formFullName">
-                  <Form.Control
-                    type="text"
-                    name="fullName"
-                    placeholder="Full Name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.fullName}
-                    required={false}
-                    className={
-                      touched.fullName && errors.fullName ? "error" : null
-                    }
-                  />
-                  {touched.fullName && errors.fullName && (
-                    <div style={{ color: "red" }}>{errors.fullName}</div>
-                  )}
-                </Form.Group>
-
                 <Form.Group controlId="formEmail" className="mt-4">
                   <Form.Control
                     name="email"
@@ -81,6 +70,22 @@ const ValidationSchemaExample = () => {
                   />
                   {touched.email && errors.email && (
                     <div style={{ color: "red" }}>{errors.email}</div>
+                  )}
+                </Form.Group>
+                <Form.Group controlId="formPassword" className="mt-4">
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    className={
+                      touched.password && errors.password ? "error" : null
+                    }
+                  />
+                  {touched.password && errors.password && (
+                    <div style={{ color: "red" }}>{errors.password}</div>
                   )}
                 </Form.Group>
 
