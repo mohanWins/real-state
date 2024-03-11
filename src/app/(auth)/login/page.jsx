@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -7,7 +6,8 @@ import Image from "next/image";
 import { Form, Button } from "react-bootstrap";
 import Link from "next/link";
 import axios from "axios";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getData } from "@/lib/features/token/authSlice";
 import { useRouter } from "next/navigation";
 
 const SignupSchema = Yup.object().shape({
@@ -21,6 +21,11 @@ const SignupSchema = Yup.object().shape({
 
 const ValidationSchemaExample = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const token = useSelector((state) => state?.counter?.token);
+
+
   return (
     <div className="container-fluid vh-100">
       <div className="row h-100">
@@ -41,7 +46,12 @@ const ValidationSchemaExample = () => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               resetForm();
               try {
-                await axios.post("/api/users/login", values);
+                const { data } = await axios.post("/api/users/login", values);
+                console.log({
+                  loggedIn: data.data,
+                });
+                dispatch(getData(data.data));
+
                 router.push("/");
               } catch (error) {
                 console.log("Login  failed", error.message);
@@ -110,6 +120,7 @@ const ValidationSchemaExample = () => {
                     Submit
                   </Button>
                 </div>
+
                 <div className="mt-4">
                   <span>
                     New broker by number{" "}
@@ -125,6 +136,8 @@ const ValidationSchemaExample = () => {
               </Form>
             )}
           </Formik>
+
+       
         </div>
       </div>
     </div>

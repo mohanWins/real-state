@@ -2,9 +2,9 @@ import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/app/globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import 'mdb-react-ui-kit/dist/css/mdb.min.css'
-import "@fortawesome/fontawesome-free/css/all.min.css"
-
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { Providers } from "@/lib/storeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
