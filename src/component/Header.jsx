@@ -21,8 +21,14 @@ export const Header = () => {
   };
   return (
     <>
-      <Navbar expand="lg">
-        <div className="container-fluid" style={{ display: "flex" }}>
+      <Navbar
+        className="sticky-top"
+        style={{
+          height: "65px",
+          backgroundColor: "white",
+        }}
+      >
+        <div className="container-fluid">
           <Nav className=" gap-3 ps-5">
             <Link style={{ textDecoration: "none", color: "black" }} href="">
               Buy
@@ -48,9 +54,9 @@ export const Header = () => {
           </Nav>
 
           <div style={{ justifyContent: "end", paddingRight: "165px" }}>
-            {token ? (
+            {!token ? (
               <>
-                <div style={{ display: "flex", gap: "25px" }}>
+                <div style={{ display: "flex", gap: "15px" }}>
                   {" "}
                   <div>
                     {" "}

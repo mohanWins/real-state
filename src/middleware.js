@@ -18,7 +18,6 @@ export function middleware(request) {
     privateRoutes.indexOf(request.nextUrl?.pathname) !== -1;
   const veryfiedAccount = request.cookies?.get("token")?.value; // token
 
-  console.log("Running: ", request.nextUrl?.pathname);
   if (isPublucRoute) {
     console.log("IN PUBLIC - ", veryfiedAccount);
     // publlic  thn do this
